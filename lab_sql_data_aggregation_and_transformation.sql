@@ -69,3 +69,56 @@ To achieve this, you need to retrieve the concatenated first and last names of c
 their email address, so that you can address them by their first name and use their email address to send personalized 
 recommendations. The results should be ordered by last name in ascending order to make it easier to use the data. */
 
+
+
+### Challenge 2
+/*1. Next, you need to analyze the films in the collection to gain some more insights. Using the film table, determine:
+1.1 The total number of films that have been released.
+1.2 The number of films for each rating.
+1.3 The number of films for each rating, sorting the results in descending 
+order of the number of films. This will help you to better understand the popularity of different film ratings and adjust 
+purchasing decisions accordingly.*/
+
+#1.1
+SELECT COUNT(*) AS number_of_films
+FROM film; # 1000 films have been released
+
+#1.2 
+SELECT rating, COUNT(*) AS number_of_films
+FROM film
+GROUP BY rating;
+
+#1.3 
+SELECT rating, COUNT(*) AS number_of_films
+FROM film
+GROUP BY rating
+ORDER BY rating DESC;
+
+
+/* 2. Using the film table, determine:
+2.1 The mean film duration for each rating, and sort the results in descending order of the mean duration. Round off the average 
+lengths to two decimal places. This will help identify popular movie lengths for each category.
+2.2 Identify which ratings have a mean duration of over two hours in order to help select films for customers who prefer longer movies.*/
+
+#2.1 
+SELECT rating, 
+	ROUND(AVG(length), 2) AS duration
+FROM film
+GROUP BY rating
+ORDER BY duration DESC;
+
+#  2.2
+SELECT rating, 
+	ROUND(AVG(length), 2) AS duration
+FROM film
+GROUP BY rating
+HAVING duration > 120 #2 * 60 = 120 --> films that have a duration of over 120min
+ORDER BY duration DESC;
+
+# 3. Bonus: determine which last names are not repeated in the table actor
+#last names which count = 1 when grouped 
+SELECT last_name, 
+	COUNT(last_name) AS repetition
+FROM actor
+GROUP BY last_name
+HAVING repetition = 1;
